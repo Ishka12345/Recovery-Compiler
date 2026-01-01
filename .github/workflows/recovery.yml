@@ -1,0 +1,55 @@
+name: Recovery Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      MANIFEST_URL:
+        description: 'Manifest URL'
+        required: true
+        default: 'https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git'
+      MANIFEST_BRANCH:
+        description: 'Manifest Branch'
+        required: true
+        default: 'twrp-11'
+      DEVICE_TREE_URL:
+        description: 'Device Tree URL'
+        required: true
+        default: 'https://github.com/Ishka12345/android_device_samsung_j2corelte'
+      DEVICE_TREE_BRANCH:
+        description: 'Device Tree Branch'
+        required: true
+        default: 'main'
+      DEVICE_PATH:
+        description: 'Device Path'
+        required: true
+        default: 'device/samsung/j2corey20lte'
+      DEVICE_NAME:
+        description: 'Device Name'
+        required: true
+        default: 'j2corey20lte'
+      MAKEFILE_NAME:
+        description: 'Makefile Name'
+        required: true
+        default: 'omni_j2corey20lte'
+      BUILD_TARGET:
+        description: 'Build Target'
+        required: true
+        default: 'recovery'
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Build Recovery
+        uses: ./
+        env:
+          MANIFEST_URL: ${{ github.event.inputs.MANIFEST_URL }}
+          MANIFEST_BRANCH: ${{ github.event.inputs.MANIFEST_BRANCH }}
+          DEVICE_TREE_URL: ${{ github.event.inputs.DEVICE_TREE_URL }}
+          DEVICE_TREE_BRANCH: ${{ github.event.inputs.DEVICE_TREE_BRANCH }}
+          DEVICE_PATH: ${{ github.event.inputs.DEVICE_PATH }}
+          DEVICE_NAME: ${{ github.event.inputs.DEVICE_NAME }}
+          MAKEFILE_NAME: ${{ github.event.inputs.MAKEFILE_NAME }}
+          BUILD_TARGET: ${{ github.event.inputs.BUILD_TARGET }}
